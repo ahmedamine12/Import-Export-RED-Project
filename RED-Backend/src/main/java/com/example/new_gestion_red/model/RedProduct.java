@@ -31,6 +31,7 @@ public class RedProduct {
     @Column(name = "date_lancement")
     private Date date_lancement;
 
+
     //@Column(name = "time")
     //private int time;
     @Column(name = "designation")
@@ -45,5 +46,29 @@ public class RedProduct {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "respo_id")
     private RespoProject respo;
+
+
+
+    @JsonFormat(pattern="yyyy-MM-dd",shape = JsonFormat.Shape.STRING)
+    @Column(name = "date_echeance")
+    private Date date_echeance;
+
+    @Column(name = "pays")
+    private String pays;
+
+    @Column(name = "facture_export")
+    private String facture_export;
+
+
+    @Column(name = "valeur_declarer")
+    private double valeur_declarer;
+
+    @Column(name = "valeur_non_decharger")
+    private double valeur_non_decharger;
+
+
+
+
+
 
 }

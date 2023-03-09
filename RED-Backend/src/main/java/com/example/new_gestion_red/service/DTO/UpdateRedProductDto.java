@@ -32,5 +32,22 @@ public class UpdateRedProductDto {
 
         private String jobGroup;
 
+        @JsonFormat(pattern="yyyy-MM-dd",shape = JsonFormat.Shape.STRING)
+        private Date date_echeance;
+
+
+        private String pays;
+
+
+        private String facture_export;
+
+
+
+        private double valeur_declarer;
+
+
+        private double valeur_non_decharger;
+
+
     }
 }

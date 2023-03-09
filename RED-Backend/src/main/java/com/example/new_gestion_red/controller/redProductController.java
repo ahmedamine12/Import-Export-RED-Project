@@ -1,5 +1,6 @@
 package com.example.new_gestion_red.controller;
 
+import com.example.new_gestion_red.model.RedProduct;
 import com.example.new_gestion_red.repository.RedProductRepositry;
 import com.example.new_gestion_red.repository.RespoProjectRepositry;
 import com.example.new_gestion_red.service.DTO.AddRedProductDto;
@@ -46,11 +47,6 @@ public class redProductController {
 
         return  productService.createRedProduct(newRedProduct, id);
 
-
-
-
-
-
     }
 
     @PutMapping("/UpdateRedProduct/{id_redpro}/{id_respo}")
@@ -66,6 +62,8 @@ public class redProductController {
 
         if (!redProductRepositry.existsById(id))
             return;
+        RedProduct pro = redProductRepositry.findById(id).orElse(null);
+        productService.delteJob_Trigger(pro,id);
         redProductRepositry.deleteById(id);
     }
     @GetMapping("/pass_Data_to_excel")
@@ -83,6 +81,11 @@ public class redProductController {
         headerRow.createCell(2).setCellValue("Nom du produit");
         headerRow.createCell(3).setCellValue("Nom du projet");
         headerRow.createCell(4).setCellValue("Date de lancement");
+        headerRow.createCell(6).setCellValue("Date d'echeance");
+        headerRow.createCell(6).setCellValue("pays");
+        headerRow.createCell(6).setCellValue("facture_export");
+        headerRow.createCell(6).setCellValue("valeur_declarer");
+        headerRow.createCell(6).setCellValue("valeur_non_decharger");
         headerRow.createCell(5).setCellValue("Responsable");
         headerRow.createCell(6).setCellValue("Email");
 
@@ -96,8 +99,13 @@ public class redProductController {
                 row.createCell(2).setCellValue(product.getDesignation());
                 row.createCell(3).setCellValue(product.getNameProject());
                 row.createCell(4).setCellValue(product.getDate_lancement().toString());
-            row.createCell(5).setCellValue(product.getRespo().getFull_name());
-            row.createCell(6).setCellValue(product.getRespo().getEmail());
+            row.createCell(5).setCellValue(product.getDate_echeance().toString());
+            row.createCell(6).setCellValue(product.getPays());
+            row.createCell(7).setCellValue(product.getFacture_export());
+            row.createCell(8).setCellValue(product.getValeur_declarer());
+            row.createCell(9).setCellValue(product.getValeur_non_decharger());
+            row.createCell(10).setCellValue(product.getRespo().getFull_name());
+            row.createCell(11).setCellValue(product.getRespo().getEmail());
 
             }
 

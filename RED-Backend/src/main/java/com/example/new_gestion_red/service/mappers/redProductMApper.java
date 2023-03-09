@@ -19,6 +19,12 @@ public class redProductMApper {
         newProDto.setDate_lancement(product.getDate_lancement());
         newProDto.setNameProject(product.getNameProject());
         newProDto.setNum_Douan(product.getNum_Douan());
+
+        newProDto.setDate_echeance(product.getDate_echeance());
+        newProDto.setPays(product.getPays());
+        newProDto.setFacture_export(product.getFacture_export());
+        newProDto.setValeur_declarer(product.getValeur_declarer());
+        newProDto.setValeur_non_decharger(product.getValeur_non_decharger());
         respoProjectDto resppoDto = new respoProjectDto();
         resppoDto.setId(product.getRespo().getId());
         resppoDto.setEmail(product.getRespo().getEmail());

@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.Calendar;
 
@@ -42,7 +43,8 @@ public class redProductService {
         return products.stream().map(p -> productMApper.ToredProductDto(p)).toList();
     }
 
-    public redProductDto getRedProductById(Long id) {
+    public redProductDto getRedProductById(Long id)
+    {
         RedProduct product = productRepositry.getOne(id);
 
         return productMApper.ToredProductDto(product);
@@ -53,24 +55,40 @@ public class redProductService {
         RespoProject newRespo = respoProjectRepositry.findById((long) id).orElse(null);
         assert newRespo != null;
         String email = newRespo.getEmail();
-
+        LocalDate newdate=null ;
         LocalDateTime dateTimesend;
         String subject = " Email rappelant from Venci Application";
         String action = addRedProductDto.getRED();
         Date datefront = addRedProductDto.getDate_lancement();
+        Date dateEcheant = addRedProductDto.getDate_echeance();
         Calendar c = Calendar.getInstance();
         c.setTime(datefront);
-        switch (action) {
-            case "AC" -> c.add(Calendar.DAY_OF_MONTH, 1);
-            case "TA" -> c.add(Calendar.DAY_OF_MONTH, 20);
-            case "AB" -> c.add(Calendar.DAY_OF_MONTH, 30);
-            case "AZ" -> c.add(Calendar.DAY_OF_MONTH, 40);
-        }
-        datefront = c.getTime();
-        LocalTime time = LocalTime.of(11, 55, 0);
-        LocalDate newdate = datefront.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(); // convert Date to LocalDate
-        dateTimesend = LocalDateTime.of(newdate, time);
+        if(dateEcheant==null) {
 
+            switch (action) {
+                case "ATPA", "AT" -> c.add(Calendar.DAY_OF_MONTH, 640);
+                // a revoiiiiiiiiiiiir
+                case "ETPP" -> c.add(Calendar.DAY_OF_MONTH, 222);
+                case "ET" -> c.add(Calendar.DAY_OF_MONTH, 275);
+                case "ET-2F" -> c.add(Calendar.DAY_OF_MONTH, 90);
+            }
+            datefront = c.getTime();
+            newdate = datefront.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            System.out.println("l'email a ete programe en sur le RED");
+        }
+     else {
+
+            LocalDate dateEcheantLocal = dateEcheant.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            newdate = dateEcheantLocal.minusMonths(3); // Subtract three months from dateEcheantLocal
+            System.out.println(newdate);
+            System.out.println("l'email a ete programe en se basant sur la date d'echeance");
+        }
+
+
+
+        LocalTime time = LocalTime.of(13, 30, 0);
+       // convert Date to LocalDate
+        dateTimesend = LocalDateTime.of(newdate, time);
 
         System.out.println(dateTimesend);
 
@@ -139,9 +157,7 @@ public class redProductService {
         respoProjectDto newRespo = new respoProjectDto();
         newRespo.setId(id_respo);
         redProductDto newpro = getRedProductById(id_redpro);
-        System.out.println(addRedProductDto.getRED());
-
-
+        if (newpro != null) {
             RedProduct oldRedproduct = new RedProduct();
             delteJob_Trigger(oldRedproduct, id_redpro);
 
@@ -149,21 +165,14 @@ public class redProductService {
             addRedProductDto.setJobGroup(response.getJobGroup());
             addRedProductDto.setJobId(response.getJobId());
 
-        
-        newpro.setRespo(newRespo);
-        newpro.setRED(addRedProductDto.getRED());
-        newpro.setDate_lancement(addRedProductDto.getDate_lancement());
-        newpro.setDesignation(addRedProductDto.getDesignation());
-        newpro.setNum_Douan(addRedProductDto.getNum_Douan());
-        newpro.setNameProject(addRedProductDto.getNameProject());
-        newpro.setId(id_redpro);
-        addRedProductDto.setRespo(newRespo);
+
+            addRedProductDto.setRespo(newRespo);
+
+            addRedProductDto.setId(id_redpro);
+            productRepositry.save(productMApper.ToredProduct(addRedProductDto));
 
 
-        productRepositry.save(productMApper.ToredProduct(addRedProductDto));
-
+        }
 
     }
-
-
 }

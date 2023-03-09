@@ -14,7 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class AddRedProductDto
 {
-
+    private long id;
     private String num_Douan;
 
     private String RED;
@@ -29,5 +29,22 @@ public class AddRedProductDto
     private String jobId;
 
     private String jobGroup;
+
+
+    @JsonFormat(pattern="yyyy-MM-dd",shape = JsonFormat.Shape.STRING)
+    private Date date_echeance;
+
+
+    private String pays;
+
+
+    private String facture_export;
+
+
+
+    private double valeur_declarer;
+
+
+    private double valeur_non_decharger;
 
 }
