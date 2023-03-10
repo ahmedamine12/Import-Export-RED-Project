@@ -2,21 +2,37 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from "../Images/Logo.png";
 import "./Navbar.css";
+import 'bootstrap/dist/js/bootstrap';
+
+import $ from 'jquery';
+window.jQuery = $;
+window.$ = $;
 
 export default function Navbar() {
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-primary" style={{ width: "100%", display: "flex" }}>
-            <div className="row" style={{ width: "100%" }}>
-                <div className=" title col-12 col-md-4" >
-                    <Link className=" title navbar-brand" to="/">Application VINCI</Link>
+        <nav className="navbar navbar-expand-md navbar-dark bg-primary">
+            <div className="container">
+                <Link className="navbar-brand" to="/">Application VINCI</Link>
+                <div className="logo ">
+                    <img className="logo-image" alt='logo' src={logo} width="200" height="50"/>
                 </div>
-                <div className=" logo col-12 col-md-4 d-flex justify-content-center align-items-center">
-                    <img style={{ marginLeft: "0px" }} className="logo" alt='logo' src={logo} width="200" height="50" />
+                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
+                </button>
+                <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
+                    <ul className="navbar-nav">
+                        <li className="nav-item">
+                            <Link className="nav-link" aria-current="page" to="/" style={{ textDecoration: 'none', color: 'white', marginRight: '10px' }}>Home</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" aria-current="page" to="/homeRedproduct" style={{ textDecoration: 'none', color: 'white', marginRight: '10px' }}>Espace RED</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/homeRespo" style={{ textDecoration: 'none', color: 'white' }}>Espace Responsable</Link>
+                        </li>
+                    </ul>
                 </div>
-                <div className="col-12 col-md-4 d-flex justify-content-end ">
-                    <Link className='mylink btn btn-outline-light me-3 px-4' to="/">Espace RED</Link>
-                    <Link className='mylink btn btn-outline-light px-4' to="/homeRespo">Espace Responsable</Link>
-                </div>
+
             </div>
         </nav>
     );

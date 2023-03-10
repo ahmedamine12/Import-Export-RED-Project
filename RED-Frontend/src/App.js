@@ -8,6 +8,9 @@ import EditRespo from "./responsable/EditRespo"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AddRedproduct from "./redProduct/AddRedProduct";
 import EditRedProduct from "./redProduct/EditRedProduct";
+import HomeRedproduct from "./redProduct/HomeRedproduct";
+
+
 
 function App() {
   return (
@@ -21,7 +24,7 @@ function App() {
           <Route exact path="/homeRespo" element={<HomeRespo />} />
           <Route exact path="/addRespo" element={<AddRespo />} />
           <Route exact path="/editrespo/:id" element={<EditRespo />} />
-
+          <Route exact path={"/homeRedproduct"} element={<HomeRedproduct />} />
         </Routes>
       </Router>
     </div>

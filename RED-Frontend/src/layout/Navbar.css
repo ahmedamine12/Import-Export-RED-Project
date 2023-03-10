@@ -8,3 +8,21 @@
     height: auto;
     width: auto;
 }
+.logo{
+    margin-left: 350px;
+}
+.navbar-nav .nav-link {
+    font-size: 18px;
+    padding: 0 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #fff;
+    background-color: #007bff;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+

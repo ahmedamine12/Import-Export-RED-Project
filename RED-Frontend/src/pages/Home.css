@@ -1,0 +1,122 @@
+.container-fluid {
+    background-color: #f1f1f1;
+}
+
+h2 {
+    color: blue;
+}
+
+.chart-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.chart {
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 1px 1px 5px #ccc;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    width: 100%;
+}
+
+.chart:first-child {
+    margin-bottom: 0;
+}
+
+.chart-label {
+    display: flex;
+    flex-direction: row;
+    font-size: 20px;
+    font-weight: bold;
+    margin-right: 24px;
+}
+
+.chart-label .value {
+    margin-left: 12px;
+}
+
+.arrows {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 12px;
+}
+
+.up-arrow {
+    color: green;
+    margin-right: 6px;
+    height: 50px;
+}
+
+.down-arrow {
+    color: red;
+    margin-left: 6px;
+    height: 50px;
+}
+
+@media (min-width: 768px) {
+    .chart-container {
+        flex-direction: row;
+        justify-content: center;
+        align-items: stretch;
+    }
+
+    .chart {
+        margin-right: 16px;
+        margin-bottom: 0;
+    }
+
+    .chart:last-child {
+        margin-right: 0;
+    }
+}
+
+/* Apply blue and red color to charts */
+.recharts-wrapper .recharts-pie .recharts-sector {
+    fill: blue;
+}
+
+.recharts-wrapper .recharts-pie .recharts-sector:nth-child(2n+1) {
+    fill: red;
+}
+
+.recharts-wrapper .recharts-bar .recharts-bar-rect {
+    fill: blue;
+}
+
+.recharts-wrapper .recharts-bar .recharts-bar-rect:nth-child(2n+1) {
+    fill: red;
+}
+
+.recharts-wrapper .recharts-line .recharts-line-legend {
+    fill: blue;
+}
+
+.recharts-wrapper .recharts-line .recharts-line-legend:nth-child(2n+1) {
+    fill: blue;
+}
+
+.recharts-wrapper .recharts-tooltip {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 5px #ccc;
+    padding: 10px;
+    font-size: 14px;
+}
+
+.recharts-wrapper .recharts-tooltip-label
+{
+    color: #666;
+}
+
+.recharts-wrapper .recharts-tooltip-item {
+    color: #333;
+    margin-bottom: 4px;
+}

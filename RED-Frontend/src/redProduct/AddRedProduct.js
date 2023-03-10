@@ -1,7 +1,7 @@
-
 import axios from "axios";
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, {useState, useEffect} from "react";
+import {Link, useNavigate} from "react-router-dom";
+
 export default function AddRedProduct() {
     let navigate = useNavigate();
     let selectrespo = "";
@@ -16,14 +16,22 @@ export default function AddRedProduct() {
     }, []);
 
 
-
-
-
-
     const loadRespos = async () => {
         const result = await axios.get("http://localhost:8080/resposProjects")
         setrespo(result.data);
     }
+
+
+    const [countries, setCountries] = useState([]);
+    useEffect(() => {
+        axios.get('https://restcountries.com/v2/all')
+            .then(response => {
+                setCountries(response.data);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, []);
 
 
     // pour les products
@@ -31,16 +39,24 @@ export default function AddRedProduct() {
         num_Douan: "",
         red: "",
         date_lancement: "",
+        date_echeance: "",
         designation: "",
         nameProject: "",
+        pays: "",
+        facture_export: "",
+        valeur_declarer: "",
+        valeur_non_decharger: "",
     });
 
 
-
-    const { num_Douan, red, date_lancement, designation, nameProject } = redProduct;
+    const {
+        num_Douan, red, date_lancement, date_echeance,
+        designation, nameProject, pays, facture_export,
+        valeur_declarer, valeur_non_decharger
+    } = redProduct;
 
     const onInputChange = (e) => {
-        setRedproduct({ ...redProduct, [e.target.name]: e.target.value });
+        setRedproduct({...redProduct, [e.target.name]: e.target.value});
         console.log(redProduct);
     }
 
@@ -56,6 +72,12 @@ export default function AddRedProduct() {
         console.log(redProduct);
 
     }
+    const onInputChange4 = (e) => {
+
+        redProduct.pays = e.target.value;
+
+
+    }
 
     const [message, setMessage] = useState("");
 
@@ -63,23 +85,35 @@ export default function AddRedProduct() {
         console.log(redProduct);
         e.preventDefault();
         const result = await axios.post("http://localhost:8080/redProduct/" + selectrespo, redProduct);
-        setMessage(result.data);
+
         if (result.data === "Email Scheduled Successfully!") {
-            navigate("/");
+            setTimeout(() => {
+                window.location.reload();
+                setMessage("Email Scheduled Successfully!")
+            }, 1000);
+            navigate("/homeRedproduct");
         } else {
             // Save some information before reloading the page
             const savedInfo = {
                 num_Douan: redProduct.num_Douan,
                 red: redProduct.red,
                 designation: redProduct.designation,
-                nameProject: redProduct.nameProject
+                nameProject: redProduct.nameProject,
+                pays: redProduct.pays,
+                facture_export: redProduct.facture_export,
+                valeur_declarer: redProduct.valeur_declarer,
+                valeur_non_decharger: redProduct.valeur_non_decharger,
             };
             localStorage.setItem("savedInfo", JSON.stringify(savedInfo));
-
+            setMessage(result.data);
             // Reload the page after 1 second
             setTimeout(() => {
-                window.location.reload();
-            }, 1000);
+
+                    window.location.reload();
+                    setMessage("");
+                },
+                2000);
+
         }
     };
 
@@ -93,7 +127,11 @@ export default function AddRedProduct() {
                 num_Douan: savedInfo.num_Douan,
                 red: savedInfo.red,
                 designation: savedInfo.designation,
-                nameProject: savedInfo.nameProject
+                nameProject: savedInfo.nameProject,
+                pays: savedInfo.pays,
+                facture_export: savedInfo.facture_export,
+                valeur_declarer: savedInfo.valeur_declarer,
+                valeur_non_decharger: savedInfo.valeur_non_decharger,
             }));
 
             // Clear the saved information from localStorage
@@ -102,13 +140,12 @@ export default function AddRedProduct() {
     }, []);
 
 
-
     return (
         <div className="container">
             <div className="row">
                 <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
                     <h2 className="text-center m-4">Register User</h2>
-                    {message && <p className='text-center text-danger'>{message}</p>}
+
                     <form onSubmit={(e) => onSubmit(e)}>
                         <div className="mb-3">
                             <label htmlFor="Name" className="form-label">
@@ -129,23 +166,29 @@ export default function AddRedProduct() {
                                 RED
                             </label>
                             <select class="form-select"
-                                onChange={(e) => onInputChange3(e)}>
-                                <option disabled selected value> -- Choisir une action -- </option>
+                                    onChange={(e) => onInputChange3(e)}>
+                                <option disabled selected value> -- Choisir une action --</option>
                                 <option
-                                    value="AC"> AC
+                                    value="ATPA"> ATPA (Admission temporaire pour perfectionnement actif)
                                 </option>
-                                <option name="AC"
-                                    value="TA"> TA</option>
-                                <option name="red"
-                                    value="AB">AB</option>
-                                <option name="red"
-                                    value="AZ">AZ</option>
+                                <option
+                                        value="ETPP"> ETPP (Exportation temporaire pour perfectionnement passif)
+                                </option>
+                                <option
+                                        value="ET"> ET (Exportation temporaire)
+                                </option>
+                                <option
+                                        value="ET-2F">ET-2F (Exportation temporaire vers Zone franche)
+                                </option>
+                                <option
+                                    value="AT">AT (Admission temporaire)
+                                </option>
                             </select>
 
                         </div>
                         <div className="mb-3">
                             <label className="form-label">
-                                Date de lancement
+                                Date d'ouverture
                             </label>
                             <input
                                 required
@@ -158,8 +201,22 @@ export default function AddRedProduct() {
                             />
                         </div>
                         <div className="mb-3">
+                            <label className="form-label">
+                                Date d'echeance
+                            </label>
+                            <input
+
+                                type={"Date"}
+                                className="form-control"
+                                placeholder=""
+                                name="date_echeance"
+                                value={date_echeance}
+                                onChange={(e) => onInputChange(e)}
+                            />
+                        </div>
+                        <div className="mb-3">
                             <label htmlFor="Email" className="form-label">
-                                Designation du produit
+                                Designation marchandise
                             </label>
                             <input
                                 required
@@ -173,7 +230,7 @@ export default function AddRedProduct() {
                         </div>
                         <div className="mb-3">
                             <label className="form-label">
-                                Nom du projet
+                                Libelle projet
                             </label>
                             <input
                                 required
@@ -184,24 +241,87 @@ export default function AddRedProduct() {
                                 value={nameProject}
                                 onChange={(e) => onInputChange(e)}
                             />
+
                         </div>
+                        <div className="mb-3">
+                            <label className="form-label">
+                                pays
+                            </label>
+
+                            <select class="form-select" onChange={(e) => onInputChange4(e)}>
+
+                                <option disabled selected value> -- Choisir un pays --</option>
+
+                                {
+                                    countries.map(country => (
+                                        <option name={country.name} value={country.name}> {country.name}</option>
+                                    ))}
+                            </select>
+
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">
+                                facture_export
+                            </label>
+                            <input
+                                required
+                                type={"text"}
+                                className="form-control"
+                                placeholder="Entrer le nom du projet"
+                                name="facture_export"
+                                value={facture_export}
+                                onChange={(e) => onInputChange(e)}
+                            />
+
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">
+                                valeur_declarer
+                            </label>
+                            <input
+                                required
+                                type={"text"}
+                                className="form-control"
+                                placeholder="Entrer le nom du projet"
+                                name="valeur_declarer"
+                                value={valeur_declarer}
+                                onChange={(e) => onInputChange(e)}
+                            />
+
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">
+                                valeur_non_decharger
+                            </label>
+                            <input
+                                required
+                                type={"text"}
+                                className="form-control"
+                                placeholder="Entrer le nom du projet"
+                                name="valeur_non_decharger"
+                                value={valeur_non_decharger}
+                                onChange={(e) => onInputChange(e)}
+                            />
+
+                        </div>
+
+
                         <div className="mb-3">
                             <label className="form-label">
                                 Responsable
                             </label>
-                            <div >
+                            <div>
                                 <select class="form-select"
 
 
-
-                                    onChange={(e) => onInputChange2(e)}>
-                                    <option disabled selected value> -- Choisir un responsable -- </option>
+                                        onChange={(e) => onInputChange2(e)}>
+                                    <option disabled selected value> -- Choisir un responsable --</option>
                                     {
 
 
                                         respos.map((respo, index) => (
                                             <option name={respo.full_name}
-                                                value={respo.id}>
+                                                    value={respo.id}>
                                                 {respo.full_name}</option>
 
 
@@ -218,6 +338,7 @@ export default function AddRedProduct() {
                         <Link className="btn btn-outline-danger mx-2" to="/">
                             Cancel
                         </Link>
+                        {message && <p className='text-center text-danger'>{message}</p>}
                     </form>
                 </div>
             </div>

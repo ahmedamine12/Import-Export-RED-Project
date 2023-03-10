@@ -35,13 +35,20 @@ export default function EditRedProduct() {
         num_Douan: "",
         red: "",
         date_lancement: "",
+        date_echeance:"",
         designation: "",
         nameProject: "",
+        pays:"",
+        facture_export:"",
+        valeur_declarer:"",
+        valeur_non_decharger:"",
     });
 
 
 
-    const { num_Douan, red, date_lancement, designation, nameProject } = redProduct;
+    const { num_Douan, red, date_lancement, date_echeance, 
+        designation, nameProject,pays,facture_export,
+        valeur_declarer,valeur_non_decharger } = redProduct;
 
     const onInputChange = (e) => {
         setRedproduct({ ...redProduct, [e.target.name]: e.target.value });
@@ -67,7 +74,7 @@ export default function EditRedProduct() {
         e.preventDefault();
         await axios.put(`http://localhost:8080/UpdateRedProduct/${id}/` + selectrespo, redProduct);
 
-        navigate("/");
+        navigate("/homeRedproduct");
     };
 
 
@@ -92,25 +99,7 @@ export default function EditRedProduct() {
                                 onChange={(e) => onInputChange(e)}
                             />
                         </div>
-                        <div className="mb-3">
-                            <label htmlFor="Username" className="form-label">
-                                RED
-                            </label>
-                            <select class="form-select"
-                                onChange={(e) => onInputChange3(e)}>
-                                <option disabled selected value> -- Choisir une action -- </option>
-                                <option
-                                    value="AC"> AC
-                                </option>
-                                <option name="AC"
-                                    value="TA"> TA</option>
-                                <option name="red"
-                                    value="AB">AB</option>
-                                <option name="red"
-                                    value="AZ">AZ</option>
-                            </select>
 
-                        </div>
                         <div className="mb-3">
                             <label htmlFor="Email" className="form-label">
                                 Date de lancement
@@ -122,6 +111,20 @@ export default function EditRedProduct() {
                                 placeholder=""
                                 name="date_lancement"
                                 value={date_lancement}
+                                onChange={(e) => onInputChange(e)}
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">
+                                Date d'echeance
+                            </label>
+                            <input
+                                
+                                type={"Date"}
+                                className="form-control"
+                                placeholder=""
+                                name="date_echeance"
+                                value={date_echeance}
                                 onChange={(e) => onInputChange(e)}
                             />
                         </div>
@@ -140,19 +143,94 @@ export default function EditRedProduct() {
                             />
                         </div>
                         <div className="mb-3">
-                            <label htmlFor="Email" className="form-label">
-                                Nom du projet
+                            <label className="form-label">
+                            Libelle projet
                             </label>
                             <input
                                 required
                                 type={"text"}
                                 className="form-control"
-                                placeholder="Enter your e-mail address"
+                                placeholder="Entrer le nom du projet"
                                 name="nameProject"
                                 value={nameProject}
                                 onChange={(e) => onInputChange(e)}
                             />
+                            
                         </div>
+                        <div className="mb-3">
+                            <label htmlFor="Username" className="form-label">
+                                RED
+                            </label>
+                            <select className="form-select"
+                                    onChange={(e) => onInputChange3(e)}>
+                                <option disabled selected value> -- Choisir une action --</option>
+                                <option
+                                    value="ATPA"> ATPA (Admission temporaire pour perfectionnement actif)
+                                </option>
+                                <option
+                                    value="ETPP"> ETPP (Exportation temporaire pour perfectionnement passif)
+                                </option>
+                                <option
+                                    value="ET"> ET (Exportation temporaire)
+                                </option>
+                                <option
+                                    value="ET-2F">ET-2F (Exportation temporaire vers Zone franche)
+                                </option>
+                                <option
+                                    value="AT">AT (Admission temporaire)
+                                </option>
+                            </select>
+
+                        </div>
+
+                        <div className="mb-3">
+                            <label className="form-label">
+                            facture_export
+                            </label>
+                            <input
+                                required
+                                type={"text"}
+                                className="form-control"
+                                placeholder="Entrer le nom du projet"
+                                name="facture_export"
+                                value={facture_export}
+                                onChange={(e) => onInputChange(e)}
+                            />
+                            
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">
+                            valeur_declarer
+                            </label>
+                            <input
+                                required
+                                type={"text"}
+                                className="form-control"
+                                placeholder="Entrer le nom du projet"
+                                name="valeur_declarer"
+                                value={valeur_declarer}
+                                onChange={(e) => onInputChange(e)}
+                            />
+                            
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">
+                            valeur_non_decharger
+                            </label>
+                            <input
+                                required
+                                type={"text"}
+                                className="form-control"
+                                placeholder="Entrer le nom du projet"
+                                name="valeur_non_decharger"
+                                value={valeur_non_decharger}
+                                onChange={(e) => onInputChange(e)}
+                            />
+                            
+                        </div>
+
+
+
                         <div className="mb-3">
                             <label className="form-label">
                                 Responsable
