@@ -1,121 +1,168 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import { Link, useParams } from 'react-router-dom';
-import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, Legend, Tooltip, Doughnut } from 'recharts';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid,  ResponsiveContainer } from 'recharts';
-import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import './Home.css';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
-export default function Home() {
-    const [redProducts, setredProduct] = useState([]);
-    const { id } = useParams();
+const Dashboard = () => {
+    const [redProducts, setRedProducts] = useState([]);
 
-    useEffect(() => {
-        loadRedProduct();
-    }, []);
-
-    const loadRedProduct = async () => {
+    const loadRedProducts = async () => {
         const result = await axios.get("http://localhost:8080/redProducts")
-        setredProduct(result.data);
+        setRedProducts(result.data);
     };
 
+    useEffect(() => {
+        loadRedProducts();
+    }, []);
 
+    const getTotalDeclarer = () => {
+        let total = 0;
+        redProducts.forEach(rp => total += rp.valeur_declarer);
+        return total;
+    }
 
-    const barChartData = redProducts.map((product) => ({
-        red: `${product.nameProject} (${product.pays})`,
-        valeurDeclarer: product.valeur_declarer,
-        valeurNonDecharger: product.valeur_non_decharger,
-    }));
+    const getTotalNonDecharger = () => {
+        let total = 0;
+        redProducts.forEach(rp => total += rp.valeur_non_decharger);
+        return total;
+    }
 
+    const getTopProducts = () => {
+        return redProducts.sort((a, b) => b.valeur_declarer - a.valeur_declarer).slice(0, 5);
+    }
 
-    const lineChartData = redProducts.map((product) => ({
-        name: product.nameProject,
-        valeurDeclarer: product.valeur_declarer,
-        valeurNonDecharger: product.valeur_non_decharger,
-    }));
+    const getTopCountries = () => {
+        const countries = {};
+        redProducts.forEach(rp => {
+            if (rp.pays in countries) {
+                countries[rp.pays] += rp.valeur_declarer;
+            } else {
+                countries[rp.pays] = rp.valeur_declarer;
+            }
+        });
+        const topCountries = [];
+        for (const country in countries) {
+            topCountries.push({ country: country, total: countries[country] });
+        }
+        return topCountries.sort((a, b) => b.total - a.total).slice(0, 5);
+    }
 
-
-    const areaChartData = redProducts.map((product) => ({
-        name: product.nameProject,
-        valeurDeclarer: product.valeur_declarer,
-        valeurNonDecharger: product.valeur_non_decharger,
-    }));
-
-    const kpiChartData = [
-        {
-            name: 'Total valeur déclarée',
-            value: redProducts.reduce((total, product) => total + product.valeur_declarer, 0),
-        },
+    const barChartData = [
+        { name: 'Total Declarer', value: getTotalDeclarer() },
+        { name: 'Total Non Decharger', value: getTotalNonDecharger() },
     ];
 
+    const topProductsData = getTopProducts().map(rp => {
+        return { name: rp.designation, value: rp.valeur_declarer };
+    });
+
+    const topCountriesData = getTopCountries().map(tc => {
+        return { name: tc.country, value: tc.total };
+    });
 
     return (
         <div className="container-fluid">
-            <br/>
-            <h2> Home pages </h2>
-            <br/>
-            <div className="chart-container">
-
-                <div className="chart">
-
-                    <BarChart width={300} height={300} data={barChartData}>
-                        <Legend verticalAlign="bottom" height={36} />
-                        <Bar dataKey="valeurDeclarer" fill="#ff0000" />
-                        <Bar dataKey="valeurNonDecharger" fill="#0000ff" />
-                        <Tooltip />
-                    </BarChart>
+            <br />
+            <h2>Welcome to Our Company's Dashboard</h2>
+            <br />
+            <div className="row">
+                <div className="col-md-4">
+                    <div className="card">
+                        <div className="card-body">
+                            <h5 className="card-title">Total Declarer</h5>
+                            <h6 className="card-subtitle mb-2 text-muted">{getTotalDeclarer()}</h6>
+                        </div>
+                    </div>
                 </div>
-                <div className="chart">
-
-                    <ResponsiveContainer width="100%" height={300}>
-                        <AreaChart data={areaChartData}>
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <CartesianGrid strokeDasharray="3 3"/>
-                            <Tooltip />
-                            <Area type="monotone" dataKey="valeurDeclarer" stroke="#ff0000" fill="#ff0000" />
-                            <Area type="monotone" dataKey="valeurNonDecharger" stroke="#0000ff" fill="#0000ff" />
-                        </AreaChart>
-                    </ResponsiveContainer>
+                <div className="col-md-4">
+                    <div className="card">
+                        <div className="card-body">
+                            <h5 className="card-title">Total Non Decharger</h5>
+                            <h6 className="card-subtitle mb-2 text-muted">{getTotalNonDecharger()}</h6>
+                        </div>
+                    </div>
                 </div>
-
-                <div className="chart">
-                    <LineChart width={300} height={300} data={lineChartData}>
-                        <Legend verticalAlign="bottom" height={36} />
-                        <Line type="monotone" dataKey="valeurDeclarer" stroke="#ff0000" />
-                        <Line type="monotone" dataKey="valeurNonDecharger" stroke="#0000ff" />
-                        <Tooltip />
-                    </LineChart>
+                <div className="col-md-4">
+                    <div className="card">
+                        <div className="card-body">
+                            <h5 className="card-title">Top 5 Products</h5>
+                            <ul className="list-group">
+                                {getTopProducts().map(rp => (
+                                    <li className="list-group-item" key={rp.id}>
+                                        <span>{rp.designation}: </span>  {rp.valeur_declarer}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-
-                <div className="chart">
-
-                    <PieChart width={300} height={400}>
-                        <Pie
-                            data={kpiChartData}
-                            dataKey="value"
-                            label="zd"
-                            nameKey="name"
-                            cx="50%"
-                            cy="50%"
-                            outerRadius={80}
-                            labelLine={false}
-                        >
-                            <Cell fill={"#0000ff"} />
-                            <Cell fill={"#0000ff"} />
-                        </Pie>
-                        <Tooltip />
-                    </PieChart>
-                    <div className="chart-label">
-
-                        <div className="arrows">
-                            <FontAwesomeIcon icon={faArrowUp} className="up-arrow" />
-                            <FontAwesomeIcon icon={faArrowDown} className="down-arrow" />
+            </div>
+            <br />
+            <div className="row">
+                <div className="col-md-6">
+                    <div className="card">
+                        <div className="card-body">
+                            <h5 className="card-title">Top 5 Countries</h5>
+                            <ul className="list-group">
+                                {getTopCountries().map(tc => (
+                                    <li className="list-group-item" key={tc.country}>{tc.country}: {tc.total}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-md-6">
+                    <div className="card">
+                        <div className="card-body">
+                            <h5 className="card-title">Total Declarer vs Total Non Decharger</h5>
+                            <BarChart width={500} height={300} data={barChartData}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="name" />
+                                <YAxis />
+                                <Tooltip />
+                                <Legend />
+                                <Bar dataKey="value" fill="#8884d8" />
+                            </BarChart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div className="row">
+                <div className="col-md-12">
+                    <div className="card">
+                        <div className="card-body">
+                            <h5 className="card-title">Top 5 Products Chart</h5>
+                            <BarChart width={1000} height={400} data={topProductsData}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="name" />
+                                <YAxis />
+                                <Tooltip />
+                                <Legend />
+                                <Bar dataKey="value" fill="#8884d8" />
+                            </BarChart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div className="row">
+                <div className="col-md-12">
+                    <div className="card">
+                        <div className="card-body">
+                            <h5 className="card-title">Top 5 Countries Chart</h5>
+                            <BarChart width={1000} height={400} data={topCountriesData}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="name" />
+                                <YAxis />
+                                <Tooltip />
+                                <Legend />
+                                <Bar dataKey="value" fill="#8884d8" />
+                            </BarChart>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-            );
-            }
+    );
+};
+export default Dashboard;
