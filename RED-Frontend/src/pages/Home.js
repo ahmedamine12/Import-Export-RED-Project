@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-
+import "./Home.css";
 const Dashboard = () => {
     const [redProducts, setRedProducts] = useState([]);
 
@@ -61,109 +61,90 @@ const Dashboard = () => {
 
     return (
         <div className="container-fluid">
-            <br />
-            <h2>Welcome to Our Company's Dashboard</h2>
-            <br />
-            <div className="row">
-                <div className="col-md-4">
-                    <div className="card">
-                        <div className="card-body">
-                            <h5 className="card-title">Total Declarer</h5>
-                            <h6 className="card-subtitle mb-2 text-muted">{getTotalDeclarer()}</h6>
-                        </div>
-                    </div>
-                </div>
-                <div className="col-md-4">
-                    <div className="card">
-                        <div className="card-body">
-                            <h5 className="card-title">Total Non Decharger</h5>
-                            <h6 className="card-subtitle mb-2 text-muted">{getTotalNonDecharger()}</h6>
-                        </div>
-                    </div>
-                </div>
-                <div className="col-md-4">
-                    <div className="card">
-                        <div className="card-body">
-                            <h5 className="card-title">Top 5 Products</h5>
-                            <ul className="list-group">
-                                {getTopProducts().map(rp => (
-                                    <li className="list-group-item" key={rp.id}>
-                                        <span>{rp.designation}: </span>  {rp.valeur_declarer}
-                                    </li>
-                                ))}
-                            </ul>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br />
-            <div className="row">
-                <div className="col-md-6">
-                    <div className="card">
-                        <div className="card-body">
-                            <h5 className="card-title">Top 5 Countries</h5>
-                            <ul className="list-group">
-                                {getTopCountries().map(tc => (
-                                    <li className="list-group-item" key={tc.country}>{tc.country}: {tc.total}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div className="col-md-6">
-                    <div className="card">
-                        <div className="card-body">
-                            <h5 className="card-title">Total Declarer vs Total Non Decharger</h5>
-                            <BarChart width={500} height={300} data={barChartData}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="name" />
-                                <YAxis />
-                                <Tooltip />
-                                <Legend />
-                                <Bar dataKey="value" fill="#8884d8" />
-                            </BarChart>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br />
-            <div className="row">
-                <div className="col-md-12">
-                    <div className="card">
-                        <div className="card-body">
-                            <h5 className="card-title">Top 5 Products Chart</h5>
-                            <BarChart width={1000} height={400} data={topProductsData}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="name" />
-                                <YAxis />
-                                <Tooltip />
-                                <Legend />
-                                <Bar dataKey="value" fill="#8884d8" />
-                            </BarChart>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br />
-            <div className="row">
-                <div className="col-md-12">
-                    <div className="card">
-                        <div className="card-body">
-                            <h5 className="card-title">Top 5 Countries Chart</h5>
-                            <BarChart width={1000} height={400} data={topCountriesData}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="name" />
-                                <YAxis />
-                                <Tooltip />
-                                <Legend />
-                                <Bar dataKey="value" fill="#8884d8" />
-                            </BarChart>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <br />
+    <h2>Home</h2>
+    <br />
+    <div className="row">
+      <div className="col-md-4">
+        <div className="card">
+          <div className="card-body">
+            <h5 className="card-title">Total Declarer</h5>
+            <h6 className="card-subtitle mb-2 text-muted">{getTotalDeclarer()}</h6>
+          </div>
         </div>
+      </div>
+      <div className="col-md-4">
+        <div className="card">
+          <div className="card-body">
+            <h5 className="card-title">Total Non Decharger</h5>
+            <h6 className="card-subtitle mb-2 text-muted">{getTotalNonDecharger()}</h6>
+          </div>
+        </div>
+      </div>
+      <div className="col-md-4">
+        <div className="card">
+          <div className="card-body">
+            <h5 className="card-title">Top 5 Products</h5>
+            <ul className="list-group">
+              {getTopProducts().map(rp => (
+                <li className="list-group-item" key={rp.id}>
+                  <span>{rp.designation}: </span>  {rp.valeur_declarer}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div className="row">
+      <div className="col-md-6">
+        <div className="card">
+          <div className="card-body">
+            <h5 className="card-title">Top 5 Countries</h5>
+            <ul className="list-group">
+              {getTopCountries().map(tc => (
+                <li className="list-group-item" key={tc.country}>{tc.country}: {tc.total}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div className="col-md-6">
+        <div className="card">
+          <div className="card-body">
+            <h5 className="card-title">Total Declarer vs Total Non Decharger</h5>
+            <BarChart width={500} height={300} data={barChartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="value" fill="#8884d8" />
+            </BarChart>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div className="row">
+      <div className="col-md-12">
+        <div className="card">
+          <div className="card-body">
+            <h5 className="card-title">Top 5 Products Chart</h5>
+            <BarChart width={1000} height={400} data={topProductsData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="value" fill="#8884d8" />
+            </BarChart>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
     );
 };
 export default Dashboard;
