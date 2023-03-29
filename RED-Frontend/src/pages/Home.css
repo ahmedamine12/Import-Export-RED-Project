@@ -1,39 +1,88 @@
 body {
-    background-color: #f0f0f0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+h1 {
+  font-size: 36px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 30px;
+}
+
+h2 {
+  color: red;
+  font-family: Arial, sans-serif;
+}
+
+.card-title {
+  color: blue;
+  font-size: 20px;
+}
+
+.list-group-item {
+  font-size: 18px;
+}
+
+.card-body {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.container-fluid {
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.list-group-item {
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.list-group-item:hover {
+  background-color: #e9ecef;
+  cursor: pointer;
+}
+
+/* Responsive design for smaller screens */
+@media screen and (max-width: 768px) {
+  h1 {
+    font-size: 24px;
+    margin-top: 30px;
+    margin-bottom: 20px;
   }
+
   h2 {
-    color: red;
-    font-family: Arial, sans-serif;
+    font-size: 24px;
   }
-  
+
   .card-title {
-    color: blue;
-    font-size: 20px;
-  }
-  
-  .list-group-item {
     font-size: 18px;
   }
-  
+
+  .list-group-item {
+    font-size: 16px;
+  }
+
   .card-body {
-    background-color: #f8f9fa;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    border-radius: 0;
+    box-shadow: none;
   }
+
   .container-fluid {
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    box-shadow: none;
+    padding: 10px;
   }
+
   .list-group-item {
-    background-color: #f8f9fa;
-    border-radius: 5px;
-    font-size: 18px;
-    margin-bottom: 10px;
+    border-radius: 0;
+    margin-bottom: 5px;
   }
-  .list-group-item:hover {
-    background-color: #e9ecef;
-    cursor: pointer;
-  }
-  
+}
