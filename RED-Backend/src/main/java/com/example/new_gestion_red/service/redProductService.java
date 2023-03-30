@@ -66,7 +66,7 @@ public class redProductService {
         if(dateEcheant==null) {
 
             switch (action) {
-                case "ATPA", "AT" -> c.add(Calendar.DAY_OF_MONTH, 640);
+                case "ATPA", "AT" -> c.add(Calendar.DAY_OF_MONTH, 1);
                 // a revoiiiiiiiiiiiir
                 case "ETPP" -> c.add(Calendar.DAY_OF_MONTH, 222);
                 case "ET" -> c.add(Calendar.DAY_OF_MONTH, 275);
@@ -86,7 +86,7 @@ public class redProductService {
 
 
 
-        LocalTime time = LocalTime.of(13, 30, 0);
+        LocalTime time = LocalTime.of(1, 16, 0);
        // convert Date to LocalDate
         dateTimesend = LocalDateTime.of(newdate, time);
 
@@ -122,7 +122,8 @@ public class redProductService {
             ScheduleEmailResponse response = sendemail(addRedProductDto, id);
             addRedProductDto.setJobGroup(response.getJobGroup());
             addRedProductDto.setJobId(response.getJobId());
-            if (response.isSuccess()) {
+            if (response.isSuccess())
+            {
                 productRepositry.save(productMApper.ToredProduct(addRedProductDto));
                 return response.getMessage();
             }
