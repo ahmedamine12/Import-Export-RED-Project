@@ -30,6 +30,9 @@ export default function Navbar() {
                         <li className="nav-item">
                             <Link className="nav-link" to="/homeRespo" style={{ textDecoration: 'none', color: 'white' }}>Espace Responsable</Link>
                         </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/homeLc" style={{ textDecoration: 'none', color: 'white' }}>Espace LC</Link>
+                        </li>
                     </ul>
                 </div>
 

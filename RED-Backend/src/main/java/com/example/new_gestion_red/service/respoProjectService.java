@@ -18,7 +18,7 @@ import java.util.List;
 public class respoProjectService {
 private RespoProjectRepositry resporepositry ;
 private respoProjectMapper respoMapper ;
-    public List<respoProjectDto> getAllRedProduct()
+    public List<respoProjectDto> getAllRespo()
     {
         List<RespoProject> respos = resporepositry.findAll();
         return respos.stream().map(p-> respoMapper.TorespoProjecttDto(p)).toList();

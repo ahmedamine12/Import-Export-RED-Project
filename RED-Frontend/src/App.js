@@ -9,6 +9,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AddRedproduct from "./redProduct/AddRedProduct";
 import EditRedProduct from "./redProduct/EditRedProduct";
 import HomeRedproduct from "./redProduct/HomeRedproduct";
+import HomeLc from "./LC/HomeLc";
+import AddLc from "./LC/AddLc";
 
 
 
@@ -25,6 +27,7 @@ function App() {
           <Route exact path="/addRespo" element={<AddRespo />} />
           <Route exact path="/editrespo/:id" element={<EditRespo />} />
           <Route exact path={"/homeRedproduct"} element={<HomeRedproduct />} />
+          <Route exact path={"/homeLc"} element={<HomeLc />} />
         </Routes>
       </Router>
     </div>

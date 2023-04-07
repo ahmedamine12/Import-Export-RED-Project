@@ -23,7 +23,7 @@ public class respoProjectController {
 
         private RespoProjectRepositry respoProjectRepositry ;
         private respoProjectService respoService ;
-        private respoProjectMapper respoMapper ;
+
 
         @PostMapping("/respoProject")
         RespoProject newRespoProject(@RequestBody RespoProject newRespoProject)
@@ -42,7 +42,7 @@ public class respoProjectController {
         List<respoProjectDto> getAllRespoProject()
         {
 
-                return respoService.getAllRedProduct();
+                return respoService.getAllRespo();
         }
 
     @PutMapping("/UpdateRespo/{id_respo}")
