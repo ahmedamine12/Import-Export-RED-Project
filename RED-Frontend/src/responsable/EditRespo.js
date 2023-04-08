@@ -25,18 +25,6 @@ export default function EditRespo() {
 
     }, []);
 
-
-
-
-
-
-    // pour les products
-
-
-
-
-
-
     const onInputChange = (e) => {
         setRespo({ ...respo, [e.target.name]: e.target.value });
         console.log(respo);

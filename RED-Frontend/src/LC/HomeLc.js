@@ -77,7 +77,7 @@ export default function HomeLc() {
 
                                 <Link className='btn btn-primary mx-2'
 
-                                      to={`/editrespo/${Lc.id}`}
+                                      to={`/editLc/${Lc.id}`}
 
                                 >Edit</Link>
 

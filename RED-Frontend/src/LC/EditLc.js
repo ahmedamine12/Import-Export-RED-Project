@@ -1,10 +1,13 @@
 
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-export default function AddRespo() {
+import { Link, useNavigate, useParams } from "react-router-dom";
+export default function EditLc() {
     let navigate = useNavigate();
 
+
+
+    const { id } = useParams()
     const [Lc, setLc] = useState({
         banque: "",
         conditions: "",
@@ -18,7 +21,6 @@ export default function AddRespo() {
         num_facture: "",
         ref_lc: "",
     });
-
 
     const {
         banque,
@@ -34,15 +36,27 @@ export default function AddRespo() {
         ref_lc,
     } = Lc;
 
+    const loadLcs = async () => {
+        const result = await axios.get(`http://localhost:8080/getLcById/${id}`)
+        setLc(result.data);
+    }
+    useEffect(() => {
+
+        loadLcs();
+
+
+    }, []);
+
+
     const onInputChange = (e) => {
         setLc({ ...Lc, [e.target.name]: e.target.value });
-        console.log(Lc);
+
     }
 
     const onSubmit = async (e) => {
 
         e.preventDefault();
-        await axios.post("http://localhost:8080/addLc", Lc);
+        await axios.put(`http://localhost:8080/UpdateLc/${id}`, Lc);
 
         navigate("/homeLc");
     };
@@ -52,7 +66,7 @@ export default function AddRespo() {
         <div className="container">
             <div className="row">
                 <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
-                    <h2 className="text-center m-4">Ajouter LC</h2>
+                    <h2 className="text-center m-4">Modifier LC</h2>
 
                     <form onSubmit={(e) => onSubmit(e)}>
 
@@ -211,7 +225,6 @@ export default function AddRespo() {
                                 onChange={(e) => onInputChange(e)}
                             />
                         </div>
-
 
                         <button type="submit" className="btn btn-outline-primary">
                             Submit

@@ -12,13 +12,6 @@ export default function AddRespo() {
     });
 
 
-
-
-    // pour les products
-
-
-
-
     const { full_name, email } = respo;
 
     const onInputChange = (e) => {

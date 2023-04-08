@@ -2,18 +2,12 @@ package com.example.new_gestion_red.controller;
 
 
 import com.example.new_gestion_red.model.LC;
-import com.example.new_gestion_red.model.RedProduct;
-import com.example.new_gestion_red.model.RespoProject;
+
 import com.example.new_gestion_red.repository.LcRepositry;
-import com.example.new_gestion_red.repository.RespoProjectRepositry;
-import com.example.new_gestion_red.service.DTO.AddRedProductDto;
-import com.example.new_gestion_red.service.DTO.redProductDto;
-import com.example.new_gestion_red.service.DTO.respoProjectDto;
-import com.example.new_gestion_red.service.mappers.respoProjectMapper;
-import com.example.new_gestion_red.service.respoProjectService;
-import com.fasterxml.jackson.annotation.JsonValue;
+
+import com.example.new_gestion_red.service.LcService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -24,6 +18,7 @@ import java.util.List;
 public class LcController {
 
     private LcRepositry lcRepo ;
+    private LcService lcServ ;
 
     @GetMapping("/Lcs")
     List<LC> getAllLC()
@@ -33,19 +28,23 @@ public class LcController {
     }
 
     @PostMapping("/addLc")
-    LC newLC(@RequestBody LC newLC)
+    void newLC(@RequestBody LC newLC)
     {
-            return lcRepo.save(newLC);
+        newLC.setEtat("en cours");
+        lcRepo.save(newLC);
+        lcServ.sendemail(newLC);
+
     }
 
     @GetMapping("/getLcById/{id}")
-    LC getRespoById(@PathVariable Long id)
+    LC getLcById(@PathVariable Long id)
     {
+
         return lcRepo.findById(id).orElse(null);
     }
 
     @PutMapping("/UpdateLc/{id_lc}")
-    public void updateRedProduct(@RequestBody LC newLc, @PathVariable Long id_lc) {
+    public void updateLc(@RequestBody LC newLc, @PathVariable Long id_lc) {
         LC updatedLc = lcRepo.findById(id_lc).orElse(null);
         if (updatedLc != null) {
             updatedLc.setConditions(newLc.getConditions());
@@ -61,6 +60,8 @@ public class LcController {
             updatedLc.setNum_facture(newLc.getNum_facture());
 
             lcRepo.save(updatedLc);
+
+            lcServ.sendemail(updatedLc);
         }
     }
 
@@ -77,6 +78,9 @@ public class LcController {
     }
 return response ;
     }
+
+
+
 
 
 }

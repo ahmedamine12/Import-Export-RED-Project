@@ -57,6 +57,9 @@ public class LC {
     @Column(name = "date_limit")
     private Date date_limit;
 
+    @Column(name = "etat")
+    private String etat;
+
 
 
 

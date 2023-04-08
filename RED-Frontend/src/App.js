@@ -11,6 +11,7 @@ import EditRedProduct from "./redProduct/EditRedProduct";
 import HomeRedproduct from "./redProduct/HomeRedproduct";
 import HomeLc from "./LC/HomeLc";
 import AddLc from "./LC/AddLc";
+import EditLc from "./LC/EditLc";
 
 
 
@@ -28,6 +29,8 @@ function App() {
           <Route exact path="/editrespo/:id" element={<EditRespo />} />
           <Route exact path={"/homeRedproduct"} element={<HomeRedproduct />} />
           <Route exact path={"/homeLc"} element={<HomeLc />} />
+          <Route exact path={"/addLc"} element={<AddLc />}/>
+          <Route exact path={"/editLc/:id"} element={<EditLc />}/>
         </Routes>
       </Router>
     </div>
