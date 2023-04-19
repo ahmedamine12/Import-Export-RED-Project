@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams ,useNavigate } from 'react-router-dom';
 export default function HomeLc() {
+    const navigate = useNavigate();
 
+    useEffect(() => {
+        // Check if the user is logged in
+        const isLoggedIn = localStorage.getItem("isLoggedIn");
+        if (!isLoggedIn) {
+            navigate('/');
+        }
+    }, [navigate]);
     const [message, setMessage] = useState();
     const [Lcs, setLcs] = useState([]);
     const { id } = useParams();

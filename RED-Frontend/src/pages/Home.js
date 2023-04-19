@@ -1,10 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { LineChart, Line,BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-
+import { useNavigate } from 'react-router-dom';
 import "./Home.css";
 const Dashboard = () => {
     const [redProducts, setRedProducts] = useState([]);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        // Check if the user is logged in
+        const isLoggedIn = localStorage.getItem("isLoggedIn");
+        if (!isLoggedIn) {
+            navigate('/');
+        }
+    }, [navigate]);
 
     const loadRedProducts = async () => {
         const result = await axios.get("http://localhost:8080/redProducts")

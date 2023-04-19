@@ -12,6 +12,7 @@ import HomeRedproduct from "./redProduct/HomeRedproduct";
 import HomeLc from "./LC/HomeLc";
 import AddLc from "./LC/AddLc";
 import EditLc from "./LC/EditLc";
+import Login from "./Admin/Login";
 
 
 
@@ -21,7 +22,8 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
-          <Route exact path="/" element={<Home />} />
+          <Route exact path="/" element={<Login />} />
+          <Route exact path="/home" element={<Home />} />
           <Route exact path="/addRedProduct" element={<AddRedproduct />} />
           <Route exact path="/editredproduct/:id" element={<EditRedProduct />} />
           <Route exact path="/homeRespo" element={<HomeRespo />} />
