@@ -10,8 +10,33 @@ function Login() {
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
+    const [showForgotPassword, setShowForgotPassword]= useState("");
 
+async function processForgotPassword(event)
+{
 
+    event.preventDefault();
+    try {
+        const response = await axios.post("http://localhost:8080/forgot_password", {
+            email: email,
+        });
+
+        if (response.data === "success") {
+            setMessage("l'email est envoyé");
+        }
+        else if(response.data==="NoEmail")
+        {
+            setMessage("l'email n'estxite pas ")
+        }
+        else
+        {
+            setMessage("nooooooooooooo");
+        }
+} catch (err) {
+        alert(err);
+    }
+
+}
     async function login(event) {
         event.preventDefault();
         try {
@@ -36,8 +61,6 @@ function Login() {
     }
 
     // Set CSS styles for body element to prevent scrollbars and remove extra white space
-    document.body.style.overflow = 'hidden';
-    document.body.style.margin = '0';
 
     return (
         <div className="container-fluid logincontent ">
@@ -46,6 +69,28 @@ function Login() {
                     <img src={logo} width="100%" height="100%" alt="Company Logo" />
                 </div>
                 <div className="col-md-6 right">
+                    {showForgotPassword ? (
+                        <div className="login-form">
+                            <h2>Reset Password</h2>
+                            <hr/>
+                            <form>
+                                <div className="form-group">
+                                    <label>Email</label>
+                                    <input type="email" className="form-control" id="email" placeholder="Enter Name"
+                                           value={email}
+                                           onChange={(event) => {
+                                               setEmail(event.target.value);
+                                           }}
+                                    />
+                                </div>
+                                <a className="link_resr" onClick={() => setShowForgotPassword(false)}>  Retour vers login
+                                </a>
+                                <button type="submit" className="btn btn-primary" onClick={processForgotPassword} >envoyer email</button>
+
+                                {message && <div className="alert alert-danger mt-2">{message}</div>}
+                            </form>
+                        </div>
+                    ) : (
                     <div className="login-form" >
                         <h2>Login</h2>
                         <hr/>
@@ -68,10 +113,16 @@ function Login() {
                                        }}
                                 />
                             </div>
+
+                            <a className="link_resr" onClick={() => setShowForgotPassword(true)}>  Mot de passe oublié?
+                            </a>
+
                             <button type="submit" className="btn btn-primary" onClick={login} >Login</button>
+
                             {message && <div className="alert alert-danger mt-2">{message}</div>}
                         </form>
                     </div>
+                    )}
                 </div>
             </div>
         </div>

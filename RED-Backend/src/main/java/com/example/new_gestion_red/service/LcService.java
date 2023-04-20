@@ -46,7 +46,7 @@ public class LcService {
             if ((100000000 - totale) < 200000000)
             {
                 System.out.println("la somme est superieur donc un email doit etre envoye");
-                String email = "bourichaamine0@gmail.com";
+                String email = "vencigestion@gmail.com";
                 String subject = " ALert!!!!!!";
                 String body = " Attention !!!!! le totale des montant des facture en cours en depasse le plafant ";
                 var mailMessage = new SimpleMailMessage();

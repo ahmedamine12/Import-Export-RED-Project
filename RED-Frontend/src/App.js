@@ -13,6 +13,7 @@ import HomeLc from "./LC/HomeLc";
 import AddLc from "./LC/AddLc";
 import EditLc from "./LC/EditLc";
 import Login from "./Admin/Login";
+import ResetPassword from "./Admin/ResetPassword";
 
 
 
@@ -33,6 +34,7 @@ function App() {
           <Route exact path={"/homeLc"} element={<HomeLc />} />
           <Route exact path={"/addLc"} element={<AddLc />}/>
           <Route exact path={"/editLc/:id"} element={<EditLc />}/>
+          <Route exact path={"/ResetPassword"} element={<ResetPassword />}/>
         </Routes>
       </Router>
     </div>

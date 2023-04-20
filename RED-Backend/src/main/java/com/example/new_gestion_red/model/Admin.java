@@ -21,4 +21,6 @@ public class Admin {
     private String password;
     @Column(name = "email")
     private String email;
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
 }

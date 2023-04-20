@@ -56,3 +56,11 @@
     background-color: rgba(138, 142, 164, 0.8);
     padding: 0px;
 }
+.link_resr {
+    float: right;
+    margin-top: 3px;
+    margin-bottom: 50px;
+    font-size: large;
+    color: blue;
+
+}
