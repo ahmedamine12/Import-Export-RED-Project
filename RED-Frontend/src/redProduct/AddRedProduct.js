@@ -87,11 +87,12 @@ export default function AddRedProduct() {
         const result = await axios.post("http://localhost:8080/redProduct/" + selectrespo, redProduct);
 
         if (result.data === "Email Scheduled Successfully!") {
+            setMessage(result.data);
             setTimeout(() => {
-                window.location.reload();
-                setMessage("Email Scheduled Successfully!")
+                navigate("/homeRedproduct");
+
             }, 1000);
-            navigate("/homeRedproduct");
+
         } else {
             // Save some information before reloading the page
             const savedInfo = {

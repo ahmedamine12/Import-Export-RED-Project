@@ -52,10 +52,14 @@
 }
 
 .logincontent {
-    backdrop-filter: blur(5px);
     background-color: rgba(138, 142, 164, 0.8);
-    padding: 0px;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
 }
+
+
+
 .link_resr {
     float: right;
     margin-top: 3px;
@@ -64,3 +68,4 @@
     color: blue;
 
 }
+
