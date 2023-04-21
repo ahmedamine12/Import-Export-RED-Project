@@ -36,13 +36,27 @@ export default function HomeLc() {
         console.log(message)
         loadRespo();
     }
+    const handleDownload = async () => {
+
+        const response = await fetch('http://localhost:8080/pass_Data_to_excel');
+        const data = await response.arrayBuffer();
+        const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'REDProductDATA.xlsx');
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+    };
     return (
 
         <div className='container-fluid'>
             <br></br>
-            <h2> Gestion du Responsable </h2>
+            <h2> Gestion des LC </h2>
             <div className="d-flex">
-                <Link type="button" className='btn btn-primary' to="/AddLc"> Ajouter Responsable</Link>
+                <Link  className='btn btn-primary me-3' to="/AddLc"> Ajouter un LC</Link>
+                <button className='btn btn-primary' onClick={handleDownload}> Import Excel data </button>
             </div>
             {message && <p className='text-center text-danger'>{message}</p>}
             <div className='table-responsive py-4'>

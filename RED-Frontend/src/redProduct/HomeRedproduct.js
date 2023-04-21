@@ -33,18 +33,21 @@ export default function Home() {
         loadRedProduct();
     }
     const handleDownload = async () => {
-
-        const response = await fetch('http://localhost:8080/pass_Data_to_excel');
-        const data = await response.arrayBuffer();
-        const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'REDProductDATA.xlsx');
-        document.body.appendChild(link);
-        link.click();
-        link.parentNode.removeChild(link);
+        try {
+            const response = await fetch('http://localhost:8080/pass_Data_to_excel');
+            const data = await response.arrayBuffer();
+            const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            const filename = 'LCdata.xlsx';
+            const existingFile = await window.showSaveFilePicker({ suggestedName: filename });
+            const writable = await existingFile.createWritable({ keepExistingData: false });
+            await writable.write(blob);
+            await writable.close();
+        } catch (error) {
+            console.error('Error saving file:', error);
+        }
     };
+
+
     return (
 
         <div className='container-fluid'>

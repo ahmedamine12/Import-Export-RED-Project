@@ -21,10 +21,12 @@ function ResetPassword() {
 console.log(token);
             if (!token) {
                 setMessage('Invalid reset password token');
+                return ;
             }
 
             if (password !== confirmPassword) {
                 setMessage('les mots de passe ne sont pas les meme');
+                return ;
             }
 
             const response = await axios.post("http://localhost:8080/Reset_Password?token=" + token, { newPassword: password });
