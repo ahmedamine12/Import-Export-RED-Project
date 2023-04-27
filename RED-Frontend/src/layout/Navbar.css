@@ -1,5 +1,4 @@
 .title {
-
     margin-top: 10px;
 }
 
@@ -8,14 +7,26 @@
     height: auto;
     width: auto;
 }
-.logo{
-    margin-left: 350px;
+
+.logo {
+
+    transition: transform 0.2s ease-in-out;
 }
+
+.logo:hover {
+    transform: rotate(5deg);
+}
+
+.navbar {
+    background-image: linear-gradient(to bottom, #007bff, #0044ff);
+}
+
 .navbar-nav .nav-link {
     font-size: 18px;
     padding: 0 15px;
     border-radius: 5px;
     transition: background-color 0.3s ease-in-out;
+    font-family: 'Roboto', sans-serif;
 }
 
 .navbar-nav .nav-link:hover {
@@ -24,5 +35,4 @@
     font-weight: bold;
     border-radius: 5px;
 }
-
 
