@@ -8,7 +8,6 @@ import com.example.new_gestion_red.model.ScheduleEmailResponse;
 import com.example.new_gestion_red.repository.RedProductRepositry;
 import com.example.new_gestion_red.repository.RespoProjectRepositry;
 import com.example.new_gestion_red.service.DTO.AddRedProductDto;
-import com.example.new_gestion_red.service.DTO.UpdateRedProductDto;
 import com.example.new_gestion_red.service.DTO.redProductDto;
 import com.example.new_gestion_red.service.DTO.respoProjectDto;
 import com.example.new_gestion_red.service.mappers.redProductMApper;
@@ -22,7 +21,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.Calendar;
 
@@ -52,6 +50,7 @@ public class redProductService {
 
 
     public ScheduleEmailResponse sendemail(AddRedProductDto addRedProductDto, Long id) {
+        ScheduleEmailResponse reponse ;
         RespoProject newRespo = respoProjectRepositry.findById((long) id).orElse(null);
         assert newRespo != null;
         String email = newRespo.getEmail();
@@ -75,6 +74,7 @@ public class redProductService {
             datefront = c.getTime();
             newdate = datefront.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             System.out.println("l'email a ete programe en sur le RED");
+
         }
      else {
 
@@ -136,8 +136,8 @@ public class redProductService {
 
     }
 
-    public void delteJob_Trigger(RedProduct addRedProductDto, Long id) {
-        addRedProductDto = productRepositry.findById(id).orElse(null);
+    public void delteJob_Trigger(Long id) {
+        RedProduct addRedProductDto = productRepositry.findById(id).orElse(null);
         JobKey jobKey = new JobKey(addRedProductDto.getJobId(), addRedProductDto.getJobGroup());
 
         // Build the trigger key using the trigger name and group defined in MyJob class
@@ -154,26 +154,30 @@ public class redProductService {
         }
     }
 
-    public void updateRedProduct(AddRedProductDto addRedProductDto, Long id_redpro, Long id_respo) {
+    public ScheduleEmailResponse updateRedProduct(AddRedProductDto addRedProductDto, Long id_redpro, Long id_respo) {
         respoProjectDto newRespo = new respoProjectDto();
+        ScheduleEmailResponse response = null;
         newRespo.setId(id_respo);
         redProductDto newpro = getRedProductById(id_redpro);
         if (newpro != null) {
-            RedProduct oldRedproduct = new RedProduct();
-            delteJob_Trigger(oldRedproduct, id_redpro);
+            delteJob_Trigger(id_redpro);
+          response = sendemail(addRedProductDto, id_respo);
+            if(response.isSuccess()) {
+                addRedProductDto.setJobGroup(response.getJobGroup());
+                addRedProductDto.setJobId(response.getJobId());
+                addRedProductDto.setRespo(newRespo);
 
-            ScheduleEmailResponse response = sendemail(addRedProductDto, id_respo);
-            addRedProductDto.setJobGroup(response.getJobGroup());
-            addRedProductDto.setJobId(response.getJobId());
+                addRedProductDto.setId(id_redpro);
+                productRepositry.save(productMApper.ToredProduct(addRedProductDto));
 
-
-            addRedProductDto.setRespo(newRespo);
-
-            addRedProductDto.setId(id_redpro);
-            productRepositry.save(productMApper.ToredProduct(addRedProductDto));
+            }
+            return response;
 
 
         }
+        response.setMessage("il y a probeleme de modification des donne ");
+        response.setSuccess(false);
+        return response;
 
     }
 }

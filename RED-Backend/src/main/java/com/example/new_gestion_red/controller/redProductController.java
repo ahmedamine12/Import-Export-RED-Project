@@ -1,6 +1,7 @@
 package com.example.new_gestion_red.controller;
 
 import com.example.new_gestion_red.model.RedProduct;
+import com.example.new_gestion_red.model.ScheduleEmailResponse;
 import com.example.new_gestion_red.repository.RedProductRepositry;
 import com.example.new_gestion_red.repository.RespoProjectRepositry;
 import com.example.new_gestion_red.service.DTO.AddRedProductDto;
@@ -50,10 +51,16 @@ public class redProductController {
     }
 
     @PutMapping("/UpdateRedProduct/{id_redpro}/{id_respo}")
-    public void updateRedProduct(@RequestBody AddRedProductDto newProduct, @PathVariable Long id_redpro,
-                                       @PathVariable Long id_respo) {
+    public String updateRedProduct(@RequestBody AddRedProductDto newProduct, @PathVariable Long id_redpro,
+                                                  @PathVariable Long id_respo) {
 
-        productService.updateRedProduct(newProduct,id_redpro,id_respo);
+        ScheduleEmailResponse response= productService.updateRedProduct(newProduct,id_redpro,id_respo);
+        if(response.isSuccess())
+        {
+            return "success";
+        }
+
+       return response.getMessage();
 
     }
 
@@ -63,7 +70,7 @@ public class redProductController {
         if (!redProductRepositry.existsById(id))
             return;
         RedProduct pro = redProductRepositry.findById(id).orElse(null);
-        productService.delteJob_Trigger(pro,id);
+        productService.delteJob_Trigger(id);
         redProductRepositry.deleteById(id);
     }
     @GetMapping("/pass_Data_to_excel")

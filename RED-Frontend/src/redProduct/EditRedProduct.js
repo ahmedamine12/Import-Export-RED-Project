@@ -1,13 +1,13 @@
-
 import axios from "axios";
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import React, {useState, useEffect} from "react";
+import {Link, useNavigate, useParams} from "react-router-dom";
+
 export default function EditRedProduct() {
     let navigate = useNavigate();
     let selectrespo = "";
 
 
-    const { id } = useParams()
+    const {id} = useParams()
 
     const [respos, setrespo] = useState([]);
 
@@ -35,26 +35,43 @@ export default function EditRedProduct() {
         num_Douan: "",
         red: "",
         date_lancement: "",
-        date_echeance:"",
+        date_echeance: "",
         designation: "",
         nameProject: "",
-        pays:"",
-        facture_export:"",
-        valeur_declarer:"",
-        valeur_non_decharger:"",
+        pays: "",
+        facture_export: "",
+        valeur_declarer: "",
+        valeur_non_decharger: "",
     });
+    const [countries, setCountries] = useState([]);
+    useEffect(() => {
+        axios.get('https://restcountries.com/v2/all')
+            .then(response => {
+                setCountries(response.data);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, []);
 
 
-
-    const { num_Douan, red, date_lancement, date_echeance, 
-        designation, nameProject,pays,facture_export,
-        valeur_declarer,valeur_non_decharger } = redProduct;
+    const {
+        num_Douan, red, date_lancement, date_echeance,
+        designation, nameProject, pays, facture_export,
+        valeur_declarer, valeur_non_decharger
+    } = redProduct;
 
     const onInputChange = (e) => {
-        setRedproduct({ ...redProduct, [e.target.name]: e.target.value });
+        setRedproduct({...redProduct, [e.target.name]: e.target.value});
         console.log(redProduct);
     }
 
+    const onInputChange4 = (e) => {
+
+        redProduct.pays = e.target.value;
+
+
+    }
 
     const onInputChange2 = (e) => {
         selectrespo = e.target.value;
@@ -68,13 +85,20 @@ export default function EditRedProduct() {
 
     }
 
-
+    const [message, setMessage] = useState("");
     const onSubmit = async (e) => {
 
         e.preventDefault();
-        await axios.put(`http://localhost:8080/UpdateRedProduct/${id}/` + selectrespo, redProduct);
+       const result = await axios.put(`http://localhost:8080/UpdateRedProduct/${id}/` + selectrespo, redProduct);
 
-        navigate("/homeRedproduct");
+if(result.data !="succes")
+{
+    navigate("/homeRedproduct");
+
+}
+else {
+    setMessage(result.data);
+}
     };
 
 
@@ -119,7 +143,7 @@ export default function EditRedProduct() {
                                 Date d'echeance
                             </label>
                             <input
-                                
+
                                 type={"Date"}
                                 className="form-control"
                                 placeholder=""
@@ -144,7 +168,7 @@ export default function EditRedProduct() {
                         </div>
                         <div className="mb-3">
                             <label className="form-label">
-                            Libelle projet
+                                Libelle projet
                             </label>
                             <input
                                 required
@@ -155,7 +179,23 @@ export default function EditRedProduct() {
                                 value={nameProject}
                                 onChange={(e) => onInputChange(e)}
                             />
-                            
+
+                        </div>
+                        <div className="mb-3">
+                            <label className="form-label">
+                                pays
+                            </label>
+
+                            <select className="form-select" onChange={(e) => onInputChange4(e)}>
+
+                                <option disabled selected value> -- Choisir un pays --</option>
+
+                                {
+                                    countries.map(country => (
+                                        <option name={country.name} value={country.name}> {country.name}</option>
+                                    ))}
+                            </select>
+
                         </div>
                         <div className="mb-3">
                             <label htmlFor="Username" className="form-label">
@@ -185,7 +225,7 @@ export default function EditRedProduct() {
 
                         <div className="mb-3">
                             <label className="form-label">
-                            facture_export
+                                facture_export
                             </label>
                             <input
                                 required
@@ -196,11 +236,11 @@ export default function EditRedProduct() {
                                 value={facture_export}
                                 onChange={(e) => onInputChange(e)}
                             />
-                            
+
                         </div>
                         <div className="mb-3">
                             <label className="form-label">
-                            valeur_declarer
+                                valeur_declarer
                             </label>
                             <input
                                 required
@@ -211,11 +251,11 @@ export default function EditRedProduct() {
                                 value={valeur_declarer}
                                 onChange={(e) => onInputChange(e)}
                             />
-                            
+
                         </div>
                         <div className="mb-3">
                             <label className="form-label">
-                            valeur_non_decharger
+                                valeur_non_decharger
                             </label>
                             <input
                                 required
@@ -226,28 +266,25 @@ export default function EditRedProduct() {
                                 value={valeur_non_decharger}
                                 onChange={(e) => onInputChange(e)}
                             />
-                            
+
                         </div>
-
-
 
                         <div className="mb-3">
                             <label className="form-label">
                                 Responsable
                             </label>
-                            <div >
+                            <div>
                                 <select class="form-select"
+                                        required
 
-
-
-                                    onChange={(e) => onInputChange2(e)}>
-                                    <option disabled selected value> -- Choisir un responsable -- </option>
+                                        onChange={(e) => onInputChange2(e)}>
+                                    <option disabled selected value> -- Choisir un responsable --</option>
                                     {
 
 
                                         respos.map((respo, index) => (
                                             <option name={respo.full_name}
-                                                value={respo.id}>
+                                                    value={respo.id}>
                                                 {respo.full_name}</option>
 
 
@@ -264,6 +301,7 @@ export default function EditRedProduct() {
                         <Link className="btn btn-outline-danger mx-2" to="/HomeRedproduct">
                             Cancel
                         </Link>
+                        {message && <p className='text-center text-danger'>{message}</p>}
                     </form>
                 </div>
             </div>

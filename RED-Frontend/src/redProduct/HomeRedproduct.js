@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
 import { Link, useParams,useNavigate } from 'react-router-dom';
+import {BaseButton} from "../BaseButton";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -33,18 +34,17 @@ export default function Home() {
         loadRedProduct();
     }
     const handleDownload = async () => {
-        try {
-            const response = await fetch('http://localhost:8080/pass_Data_to_excel');
-            const data = await response.arrayBuffer();
-            const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-            const filename = 'LCdata.xlsx';
-            const existingFile = await window.showSaveFilePicker({ suggestedName: filename });
-            const writable = await existingFile.createWritable({ keepExistingData: false });
-            await writable.write(blob);
-            await writable.close();
-        } catch (error) {
-            console.error('Error saving file:', error);
-        }
+
+        const response = await fetch('http://localhost:8080/pass_Data_to_excel');
+        const data = await response.arrayBuffer();
+        const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'REDProductDATA.xlsx');
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
     };
 
 
@@ -55,7 +55,9 @@ export default function Home() {
             <h2> Gestion du RED </h2>
             <div className="d-flex">
                 <Link className='btn btn-primary me-3' to="/addredproduct"> Ajouter RED </Link>
-                <button className='btn btn-primary' onClick={handleDownload}> Import Excel data </button>
+
+
+                <BaseButton severity={"primary"} onClick={handleDownload} text="Import Excel data"/>
             </div>
             {message && <p className='text-center text-success'>{message}</p>}
             <div className='table-responsive py-4'>
@@ -96,18 +98,22 @@ export default function Home() {
                             <td hidden>{redProduct.respo.id}</td>
                             <td style={{ whiteSpace: 'nowrap' }}>
                                 <Link className='btn btn-primary mx-2' to={`/editredproduct/${redProduct.id}`}>Edit</Link>
-                                <button className='btn btn-danger mw-2'
-                                        onClick={() => {
-                                            if (window.confirm('Confirmer votre')) deleteRedProduct(redProduct.id).then((res) => {
-                                                setMessage("Supression reussite");
-                                                setTimeout(() => {
-                                                    setMessage("");
-                                                }, 3000)
 
-                                            }).catch((error) => {
-                                                console.log(error);
-                                            })
-                                        }}>Delete</button>
+                                <BaseButton
+                                    severity={"danger"}
+                                    text={"Delete"}
+                                    onClick={() => {
+                                        if (window.confirm('Confirmer votre')) deleteRedProduct(redProduct.id).then((res) => {
+                                            setMessage("Supression reussite");
+                                            setTimeout(() => {
+                                                setMessage("");
+                                            }, 3000)
+
+                                        }).catch((error) => {
+                                            console.log(error);
+                                        })
+                                    }}
+                                    />
                             </td>
 
                         </tr>

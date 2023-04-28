@@ -7,7 +7,6 @@ export default function AddRedProduct() {
     let selectrespo = "";
     const [respos, setrespo] = useState([]);
 
-
     useEffect(() => {
 
         loadRespos();

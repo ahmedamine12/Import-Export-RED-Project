@@ -37,7 +37,6 @@ export default function HomeLc() {
         loadRespo();
     }
     const handleDownload = async () => {
-
         const response = await fetch('http://localhost:8080/pass_Data_to_excel');
         const data = await response.arrayBuffer();
         const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
