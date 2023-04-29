@@ -56,7 +56,7 @@ public class redProductService {
         String email = newRespo.getEmail();
         LocalDate newdate=null ;
         LocalDateTime dateTimesend;
-        String subject = " Email rappelant from Venci Application";
+        String subject = " Suivi Dossier RED N°" + addRedProductDto.getNum_Douan();
         String action = addRedProductDto.getRED();
         Date datefront = addRedProductDto.getDate_lancement();
         Date dateEcheant = addRedProductDto.getDate_echeance();
@@ -65,11 +65,11 @@ public class redProductService {
         if(dateEcheant==null) {
 
             switch (action) {
-                case "ATPA", "AT" -> c.add(Calendar.DAY_OF_MONTH, 1);
-                // a revoiiiiiiiiiiiir
-                case "ETPP" -> c.add(Calendar.DAY_OF_MONTH, 222);
+                case "ATPA", "ETPP" -> c.add(Calendar.DAY_OF_MONTH, 640);
+
+                case "AT", "ET-2F" -> c.add(Calendar.DAY_OF_MONTH, 90);
+
                 case "ET" -> c.add(Calendar.DAY_OF_MONTH, 275);
-                case "ET-2F" -> c.add(Calendar.DAY_OF_MONTH, 90);
             }
             datefront = c.getTime();
             newdate = datefront.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -92,10 +92,13 @@ public class redProductService {
 
         System.out.println(dateTimesend);
 
-        String body = "Bonjour Monsieur " + newRespo.getFull_name() +
-                "  ceci est un message rappelant autour du projet " + addRedProductDto.getNameProject() +
-                " le produit " + addRedProductDto.getDesignation() + " lui reste que "
-                + dateTimesend.toString();
+        String body = "Bonjour Monsieur " + newRespo.getFull_name() + ";\n"+
+                "  Ce message s'intègre dans notre procédure de suivi des importations et exportations dans le cadre des régimes économiques en douane.\n"
+                + " Nous vous informons que le dossier RED N° " + addRedProductDto.getNum_Douan() + ", sera est à échoir dans les trois prochaines mois. \n"+
+                "Par conséquent, veuillez procéder au retour de la marchandise correspondante à ce dossier ou bien lancer la procédure de prolongation de l'échéance du dossier dans le cas échéant.\n"+
+                " Bonne journée\n"+
+                "Plateforme digitale Vinci Gestion_RED"
+                ;
         ZoneId timeZone = TimeZone.getTimeZone("Africa/Casablanca").toZoneId();
 
         ScheduleEmailRequest emailSend = new ScheduleEmailRequest(email, subject, body, dateTimesend, timeZone);
