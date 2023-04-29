@@ -97,7 +97,7 @@ public class redProductService {
                 + " Nous vous informons que le dossier RED N° " + addRedProductDto.getNum_Douan() + ", sera est à échoir dans les trois prochaines mois. \n"+
                 "Par conséquent, veuillez procéder au retour de la marchandise correspondante à ce dossier ou bien lancer la procédure de prolongation de l'échéance du dossier dans le cas échéant.\n"+
                 " Bonne journée\n"+
-                "Plateforme digitale Vinci Gestion_RED"
+                "Plateforme digitale Vinci Gestion_RED "
                 ;
         ZoneId timeZone = TimeZone.getTimeZone("Africa/Casablanca").toZoneId();
 
